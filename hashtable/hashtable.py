@@ -2,10 +2,14 @@ class HashTableEntry:
     """
     Linked List hash table key/value pair
     """
+
     def __init__(self, key, value):
         self.key = key
         self.value = value
         self.next = None
+
+    # def __repr__(self):
+    #     return f'HashTableEntry({repr(self.key)}, {repr(self.value)})'
 
 
 # Hash table can't have fewer than this many slots
@@ -20,9 +24,9 @@ class HashTable:
     Implement this.
     """
 
-    def __init__(self, capacity):
-        # Your code here
-
+    def __init__(self, capacity=MIN_CAPACITY):
+        self.capacity = capacity
+        self.table = [[] for _ in range(capacity)]
 
     def get_num_slots(self):
         """
@@ -34,8 +38,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-
+        return len(self.table)
 
     def get_load_factor(self):
         """
@@ -45,16 +48,18 @@ class HashTable:
         """
         # Your code here
 
-
     def fnv1(self, key):
         """
         FNV-1 Hash, 64-bit
 
         Implement this, and/or DJB2.
         """
-
+        # hash = offset_basis
+        # for each piece_of_data to be hashed:
+        #     hash = hash * FNV_prime
+        #     hash = hash xor piece_of_data
+        # return hash
         # Your code here
-
 
     def djb2(self, key):
         """
@@ -63,14 +68,17 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
-
+        hash = 5381
+        for c in key:
+            hash = (hash * 33) + ord(c)
+        return hash
 
     def hash_index(self, key):
         """
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
+        # return self.fnv1(key) % self.capacity
         return self.djb2(key) % self.capacity
 
     def put(self, key, value):
@@ -82,7 +90,10 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        slot = self.djb2(key) % self.capacity
+        # print(f'slot:{slot}, capacity:{self.capacity}')
+        self.table[slot] = HashTableEntry(key, value)
+        # print(self.table[slot].key)
 
     def delete(self, key):
         """
@@ -93,7 +104,10 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        if not self.get(key):
+            print(f'{key} was not found.')
+        else:
+            self.put(key, None)
 
     def get(self, key):
         """
@@ -104,7 +118,10 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        hash_entry = self.table[self.djb2(key) % self.capacity]
+        if hash_entry is not None:
+            return hash_entry.value
+        return None
 
     def resize(self, new_capacity):
         """
@@ -114,7 +131,14 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        self.capacity = new_capacity
+        new_table = [[] for _ in range(self.capacity)]
+        for i in self.capacity:
+            if(self.table[i]):
+                slot = self.djb2(self.table[i].key)
+                new_table[slot] = HashTableEntry(
+                    self.table[i].key, self.table[i].value)
+        self.table = new_table
 
 
 if __name__ == "__main__":
@@ -132,8 +156,6 @@ if __name__ == "__main__":
     ht.put("line_10", "Long time the manxome foe he sought--")
     ht.put("line_11", "So rested he by the Tumtum tree")
     ht.put("line_12", "And stood awhile in thought.")
-
-    print("")
 
     # Test storing beyond capacity
     for i in range(1, 13):

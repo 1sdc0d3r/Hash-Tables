@@ -28,6 +28,7 @@ def get_slot(s):
 def put(key, value):
     slot = get_slot(key)
     data[slot] = value
+    # data[slot] = HashTableEntry(key, value)
 
 
 put("golden", 1)
@@ -39,6 +40,10 @@ print(data)
 
 def get(key):
     slot = get_slot(key)
+    # hash_entry = data[slot]
+    #  if hash_entry is not None:
+        # return hash_entry.value
+    # return None
     return data[slot]
 
 
