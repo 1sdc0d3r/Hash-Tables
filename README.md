@@ -2,7 +2,7 @@
 
 ## Day 1
 
-Implement a basic hash table without collision resolution.
+Task: Implement a basic hash table without collision resolution.
 
 1. Implement a `HashTable` class and `HashTableEntry` class.
 
@@ -12,6 +12,9 @@ Implement a basic hash table without collision resolution.
 
    * DJB2
    * FNV-1 (64-bit)
+
+   You are allowed to Google for these hashing functions and implement
+   from psuedocode.
 
 3. Implement the `hash_index()` that returns an index value for a key.
 
@@ -29,7 +32,7 @@ FNV-1 (64 bit) hashing functions, there are no collisions.
 
 ## Day 2
 
-Implement linked-list chaining for collision resolution.
+Task: Implement linked-list chaining for collision resolution.
 
 1. Modify `put()`, `get()`, and `delete()` methods to handle collisions.
 
@@ -41,9 +44,7 @@ You can test this with:
 python test_hashtable.py
 ```
 
-## Day 3
-
-Implement load factor measurements and automatic hashtable size
+Task: Implement load factor measurements and automatic hashtable size
 doubling.
 
 1. Compute and maintain load factor.
@@ -63,7 +64,7 @@ python test_hashtable_resize.py
 Stretch: When load factor decreases below `0.2`, automatically rehash
 the table to half its previous size, down to a minimum of 8 slots.
 
-## Day 4:
+## Day 3 and Day 4
 
 Work on the hashtable applications directory (in any order you
 wish--generally arranged from easier to harder, below).
@@ -78,4 +79,6 @@ full-featured.)
 * [No Duplicates](applications/no_dups/)
 * [Markov Chains](applications/markov/)
 * [Histogram](applications/histo/)
+* [Cracking Caesar Ciphers](applications/crack_caesar/)
 * [Sum and Difference](applications/sumdiff/)
+

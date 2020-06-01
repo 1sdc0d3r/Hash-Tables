@@ -1,5 +1,6 @@
 def word_count(s):
-    # Implement me.
+    # Your code here
+
 
 
 if __name__ == "__main__":
