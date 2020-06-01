@@ -8,8 +8,9 @@ class HashTableEntry:
         self.value = value
         self.next = None
 
-    # def __repr__(self):
-    #     return f'HashTableEntry({repr(self.key)}, {repr(self.value)})'
+    def __repr__(self):
+        return f'{repr(self.key)}'
+        # , {repr(self.value)})
 
 
 # Hash table can't have fewer than this many slots
@@ -26,7 +27,9 @@ class HashTable:
 
     def __init__(self, capacity=MIN_CAPACITY):
         self.capacity = capacity
-        self.table = [[] for _ in range(capacity)]
+        if self.capacity < MIN_CAPACITY:
+            self.capacity = MIN_CAPACITY
+        self.table = [None for _ in range(capacity)]
 
     def get_num_slots(self):
         """
@@ -90,9 +93,9 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        slot = self.djb2(key) % self.capacity
+        # slot = self.hash_index(key)
         # print(f'slot:{slot}, capacity:{self.capacity}')
-        self.table[slot] = HashTableEntry(key, value)
+        self.table[self.hash_index(key)] = HashTableEntry(key, value)
         # print(self.table[slot].key)
 
     def delete(self, key):
@@ -118,7 +121,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        hash_entry = self.table[self.djb2(key) % self.capacity]
+        hash_entry = self.table[self.hash_index(key)]
         if hash_entry is not None:
             return hash_entry.value
         return None
@@ -132,12 +135,13 @@ class HashTable:
         """
         # Your code here
         self.capacity = new_capacity
-        new_table = [[] for _ in range(self.capacity)]
-        for i in self.capacity:
+        new_table = [None for _ in range(self.capacity)]
+        for i in range(len(self.table)):
+            # print(i)
             if(self.table[i]):
-                slot = self.djb2(self.table[i].key)
-                new_table[slot] = HashTableEntry(
-                    self.table[i].key, self.table[i].value)
+                key, value = self.table[i].key, self.table[i].value
+                slot = self.hash_index(key)
+                new_table[slot] = HashTableEntry(key, value)
         self.table = new_table
 
 
@@ -156,20 +160,20 @@ if __name__ == "__main__":
     ht.put("line_10", "Long time the manxome foe he sought--")
     ht.put("line_11", "So rested he by the Tumtum tree")
     ht.put("line_12", "And stood awhile in thought.")
+    ht.put("line_13", "And stood test awhile in thought.")
 
     # Test storing beyond capacity
-    for i in range(1, 13):
-        print(ht.get(f"line_{i}"))
-
-    # Test resizing
+    # for i in range(1, 13):
+    #     print(i, ht.get(f"line_{i}"))
+    print(ht.table)
+    # # Test resizing
     old_capacity = ht.get_num_slots()
     ht.resize(ht.capacity * 2)
     new_capacity = ht.get_num_slots()
 
     print(f"\nResized from {old_capacity} to {new_capacity}.\n")
-
+    print(ht.table)
     # Test if data intact after resizing
     for i in range(1, 13):
-        print(ht.get(f"line_{i}"))
-
-    print("")
+        print(i, ht.get(f"line_{i}"))
+    # print(ht.get("line_9"))
