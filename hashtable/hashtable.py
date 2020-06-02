@@ -164,10 +164,9 @@ class HashTable:
             slot.insert(entry)
         # print({slot}, self.table)
         if self.get_load_factor() > 0.7:
-            pass
-            # print(
-            #     f"{key} LF: {self.get_load_factor()}")
-            # self.resize(self.capacity*2)
+            print(
+                f"{key} LF: {self.get_load_factor()}")
+            self.resize(self.capacity*2)
 
     def delete(self, key):
         """
@@ -191,9 +190,8 @@ class HashTable:
             return False
 
         if self.get_load_factor() < 0.2:
-            pass
-            # print(f"{key} LF: {self.get_load_factor()}")
-            # self.resize(self.capacity/2)
+            print(f"{key} LF: {self.get_load_factor()}")
+            self.resize(int(self.capacity/2))
 
     def get(self, key):
         """
@@ -226,13 +224,36 @@ class HashTable:
         # self.capacity = new_capacity
         # new_table = [None for _ in range(self.capacity)]
         # for i in range(len(self.table)):
-        #     # print(i)
+        # print(i)
         #     if(self.table[i]):
         #         key, value = self.table[i].key, self.table[i].value
         #         slot = self.hash_index(key)
         #         new_table[slot] = HashTableEntry(key, value)
         # self.table = new_table
         # Your code here
+        if new_capacity < MIN_CAPACITY:
+            new_capacity = MIN_CAPACITY
+        self.capacity = new_capacity
+        new_table = [None for _ in range(self.capacity)]
+        self.count = 0
+        for i in range(len(self.table)):
+            if self.table[i] is not None:
+                cur = self.table[i].head
+                while cur is not None:
+                    slot = new_table[self.hash_index(cur.key)]
+                    self.count += 1
+                    if slot is None:
+                        new_table[self.hash_index(
+                            cur.key)] = LinkedList(cur)
+                        cur = cur.next
+                    else:
+                        slot.insert(cur)
+                        cur = cur.next
+        self.table = new_table
+
+        # for index in previous hashtable
+        # pop off tails until it is empty and run a hashing function and insert into new list
+        # delete old list
 
 
 if __name__ == "__main__":
