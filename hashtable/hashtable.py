@@ -243,8 +243,7 @@ class HashTable:
                     slot = new_table[self.hash_index(cur.key)]
                     self.count += 1
                     if slot is None:
-                        new_table[self.hash_index(
-                            cur.key)] = LinkedList(cur)
+                        new_table[self.hash_index(cur.key)] = LinkedList(cur)
                         cur = cur.next
                     else:
                         slot.insert(cur)
