@@ -1,3 +1,60 @@
+class LinkedList:
+    def __init__(self, HashTableEntry=None):
+        self.head = HashTableEntry
+        self.tail = HashTableEntry
+
+    def __repr__(self):
+        return f'{repr(self.head)}'
+
+    def insert(self, HashTableEntry):
+        new_entry = HashTableEntry
+        if self.head is None:
+            self.head = new_entry
+            self.tail = new_entry
+        elif self.contains(HashTableEntry.key) is not False:
+            current = self.head
+            while current is not None:
+                if current.key == HashTableEntry.key:
+                    # print(f"CKey: {current.key}, HKey: {HashTableEntry.key}")
+                    # print(
+                    #     f"CValue:{current.value} HValue: {HashTableEntry.value}")
+                    current.value = HashTableEntry.value
+                    break
+                else:
+                    current = current.next
+        else:
+            self.tail.next = new_entry
+            self.tail = new_entry
+
+    def contains(self, key):
+        current = self.head
+        while current is not None:
+            if current.key == key:
+                return current.value
+            else:
+                current = current.next
+        return False
+
+    def remove(self, key):
+        if self.head.key == key:
+            # victum = self.head
+            self.head = self.head.next
+            # victum.next = None
+        else:
+            current = self.head
+            prev = None
+            while current is not None:
+                if current.key == key:
+                    # print(current.key)
+                    prev.next = current.next
+                    current.next = None
+                    return current.value
+                prev = current
+                current = current.next
+            return False
+# todo research garbage cleanup
+
+
 class HashTableEntry:
     """
     Linked List hash table key/value pair
@@ -30,6 +87,7 @@ class HashTable:
         if self.capacity < MIN_CAPACITY:
             self.capacity = MIN_CAPACITY
         self.table = [None for _ in range(capacity)]
+        self.count = 0
 
     def get_num_slots(self):
         """
@@ -48,8 +106,10 @@ class HashTable:
         Return the load factor for this hash table.
 
         Implement this.
+        number of things stored in hash table / num of slots in array
         """
         # Your code here
+        return self.count/len(self.table)
 
     def fnv1(self, key):
         """
@@ -92,11 +152,22 @@ class HashTable:
 
         Implement this.
         """
+        # self.table[self.hash_index(key)] = HashTableEntry(key, value)
         # Your code here
-        # slot = self.hash_index(key)
-        # print(f'slot:{slot}, capacity:{self.capacity}')
-        self.table[self.hash_index(key)] = HashTableEntry(key, value)
-        # print(self.table[slot].key)
+        slot, entry = self.table[self.hash_index(
+            key)], HashTableEntry(key, value)
+        self.count += 1
+        if slot is None:
+            self.table[self.hash_index(
+                key)] = LinkedList(entry)
+        else:
+            slot.insert(entry)
+        # print({slot}, self.table)
+        if self.get_load_factor() > 0.7:
+            pass
+            # print(
+            #     f"{key} LF: {self.get_load_factor()}")
+            # self.resize(self.capacity*2)
 
     def delete(self, key):
         """
@@ -106,11 +177,23 @@ class HashTable:
 
         Implement this.
         """
+        # if not self.get(key):
+        #     print(f'{key} was not found.')
+        # else:
+        #     self.put(key, None)
         # Your code here
-        if not self.get(key):
-            print(f'{key} was not found.')
+        slot = self.table[self.hash_index(key)]
+        if slot and slot.contains(key) is not False:
+            print(self.table)
+            self.count -= 1
+            slot.remove(key)
         else:
-            self.put(key, None)
+            return False
+
+        if self.get_load_factor() < 0.2:
+            pass
+            # print(f"{key} LF: {self.get_load_factor()}")
+            # self.resize(self.capacity/2)
 
     def get(self, key):
         """
@@ -120,10 +203,14 @@ class HashTable:
 
         Implement this.
         """
+        # hash_entry = self.table[self.hash_index(key)]
+        # if hash_entry is not None:
+        #     return hash_entry.value
+        # return None
         # Your code here
-        hash_entry = self.table[self.hash_index(key)]
-        if hash_entry is not None:
-            return hash_entry.value
+        slot = self.table[self.hash_index(key)]
+        if slot and slot.contains(key) is not False:
+            return slot.contains(key)
         return None
 
     def resize(self, new_capacity):
@@ -133,16 +220,19 @@ class HashTable:
 
         Implement this.
         """
+        # if new_capacity < MIN_CAPACITY:
+        #     new_capacity = MIN_CAPACITY
+
+        # self.capacity = new_capacity
+        # new_table = [None for _ in range(self.capacity)]
+        # for i in range(len(self.table)):
+        #     # print(i)
+        #     if(self.table[i]):
+        #         key, value = self.table[i].key, self.table[i].value
+        #         slot = self.hash_index(key)
+        #         new_table[slot] = HashTableEntry(key, value)
+        # self.table = new_table
         # Your code here
-        self.capacity = new_capacity
-        new_table = [None for _ in range(self.capacity)]
-        for i in range(len(self.table)):
-            # print(i)
-            if(self.table[i]):
-                key, value = self.table[i].key, self.table[i].value
-                slot = self.hash_index(key)
-                new_table[slot] = HashTableEntry(key, value)
-        self.table = new_table
 
 
 if __name__ == "__main__":
@@ -165,7 +255,7 @@ if __name__ == "__main__":
     # Test storing beyond capacity
     # for i in range(1, 13):
     #     print(i, ht.get(f"line_{i}"))
-    print(ht.table)
+    # print(ht.table)
     # # Test resizing
     old_capacity = ht.get_num_slots()
     ht.resize(ht.capacity * 2)
