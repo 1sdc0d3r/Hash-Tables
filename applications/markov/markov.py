@@ -26,7 +26,7 @@ paragraph = str()
 
 for i in range(len(sentences)):
     nWord = random.choice(
-        [word for word in words if word[0] == "\"" or word[0].isupper()])
+        [word for word in words if word[0] == "\"" or word[1].isupper()])
     while True:
         sentences[i] += f"{nWord} "
         if nWord[-1] in [".", "?", "!"]:
