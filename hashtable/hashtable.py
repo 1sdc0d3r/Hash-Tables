@@ -7,24 +7,20 @@ class LinkedList:
         return f'{repr(self.head)}'
 
     def insert(self, HashTableEntry):
-        new_entry = HashTableEntry
         if self.head is None:
-            self.head = new_entry
-            self.tail = new_entry
+            self.head = HashTableEntry
+            self.tail = HashTableEntry
         elif self.contains(HashTableEntry.key) is not False:
             current = self.head
             while current is not None:
                 if current.key == HashTableEntry.key:
-                    # print(f"CKey: {current.key}, HKey: {HashTableEntry.key}")
-                    # print(
-                    #     f"CValue:{current.value} HValue: {HashTableEntry.value}")
                     current.value = HashTableEntry.value
                     break
                 else:
                     current = current.next
         else:
-            self.tail.next = new_entry
-            self.tail = new_entry
+            self.tail.next = HashTableEntry
+            self.tail = HashTableEntry
 
     def contains(self, key):
         current = self.head
@@ -233,7 +229,7 @@ class HashTable:
         # Your code here
         if new_capacity < MIN_CAPACITY:
             new_capacity = MIN_CAPACITY
-        self.capacity = new_capacity
+        self.capacity = int(new_capacity)
         new_table = [None for _ in range(self.capacity)]
         self.count = 0
         for i in range(len(self.table)):

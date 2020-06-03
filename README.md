@@ -68,9 +68,7 @@ the table to half its previous size, down to a minimum of 8 slots.
 Work on the hashtable applications directory (in any order you
 wish--generally arranged from easier to harder, below).
 
-For these, you can use either the built-in `dict` type, or the hashtable
-you built. (Some of these are easier with `dict` since it's more
-full-featured.)
+For these, you can use either the built-in `dict` type, or the hashtable you built. (Some of these are easier with `dict` since it's more full-featured.)
 
 - [Lookup Table](applications/lookup_table/)
 - [Expensive Sequence](applications/expensive_seq/)
