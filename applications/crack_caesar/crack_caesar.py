@@ -11,6 +11,7 @@ with open("ciphertext.txt", "r") as f:
 cache = {}
 count = 0
 decoded = str()
+cypher = {}
 for c in [c for c in code if c in ascii_uppercase]:
     count += 1
     if c not in cache:
@@ -25,7 +26,9 @@ for c in code:
         for key, value in decode.items():
             if round((cache[c]/count*100), 2) == value:
                 decoded += key
+                if key not in cypher:
+                    cypher[key] = c
     else:
         decoded += c
 
-print(decoded)
+print(decoded, cypher)
