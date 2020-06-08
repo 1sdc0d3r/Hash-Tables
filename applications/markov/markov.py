@@ -16,7 +16,7 @@ for i in range(len(words)-1):
     else:
         # print(False)
         cache[key].append(words[i+1])
-# print(cache)
+# print(words)
 
 
 # TODO: construct 5 random sentences
@@ -26,13 +26,13 @@ paragraph = str()
 
 for i in range(len(sentences)):
     nWord = random.choice(
-        [word for word in words if word[0] == "\"" or word[1].isupper()])
+        [word for word in words if word[0] == "\"" or word[0].isupper()])
     while True:
         sentences[i] += f"{nWord} "
         if nWord[-1] in [".", "?", "!"]:
             cap = sentences[i][1:].capitalize()
             sentences[i] = f"\"{cap}"
-            paragraph += f"{sentences[i].strip()}\""
+            paragraph += f"{sentences[i].strip()}\" "
             break
         nWord = random.choice(cache[nWord])
 
