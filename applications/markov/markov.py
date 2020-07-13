@@ -10,6 +10,7 @@ cache = {}
 words = words.lower().strip().split()
 for i in range(len(words)-1):
     key = words[i]
+    # print(key)
     if key not in cache:
         # print(True)
         cache[key] = [words[i+1]]
