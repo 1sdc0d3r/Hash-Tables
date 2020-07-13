@@ -18,11 +18,12 @@ def get_slot(s):
     hash_value = hashing_func(s)
     return hash_value % len(data)
 
+
 # print(get_slot("golden"))
-# print(get_slot("trout"))  # collision w/ eagle
-# print(get_slot("eagle"))  # collision w/ trout
-# print(get_slot("bear"))
-# print(get_slot("goat"))
+# print(get_slot("trout"))
+# print(get_slot("bear"))  # collision w/ wolf
+# print(get_slot("wolf"))  # collision w/ bear
+# print(get_slot("eagle"))
 
 
 def put(key, value):
@@ -34,21 +35,24 @@ def put(key, value):
 put("golden", 1)
 put("trout", 2)
 put("bear", 3)
-put("goat", 4)
+put("wolf", 4)  # overides data position of bear
+put("eagle", 5)
 print(data)
 
 
 def get(key):
     slot = get_slot(key)
-    # hash_entry = data[slot]
-    #  if hash_entry is not None:
+    hash_entry = data[slot]
+    if hash_entry is not None:
         # return hash_entry.value
-    # return None
-    return data[slot]
+        return hash_entry
+    return None
+    # return data[slot]
 
 
 print(get("golden"))
 print(get("trout"))
+print(get("coffee"))
 
 
 def delete(key):

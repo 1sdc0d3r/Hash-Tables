@@ -77,7 +77,7 @@ for skey in sums:
         for s in sums[skey]:
             for d in diffs[skey]:
                 a, b, c, d = s[0], s[1], d[0], d[1]
-                # Make sure it's right
+                # Make sure it's right or throw assertion error
                 assert(f(a) + f(b) == f(c) - f(d))
                 print(f'f({a}) + f({b}) = f({c}) - f({d})'
                       f'    {f(a)} + {f(b)} = {f(c)} - {f(d)}')

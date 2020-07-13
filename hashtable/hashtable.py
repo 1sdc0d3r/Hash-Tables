@@ -162,7 +162,7 @@ class HashTable:
         if self.get_load_factor() > 0.7:
             print(
                 f"{key} LF: {self.get_load_factor()}")
-            self.resize(self.capacity*2)
+            self.resize(self.capacity*1.5)
 
     def delete(self, key):
         """
@@ -187,7 +187,7 @@ class HashTable:
 
         if self.get_load_factor() < 0.2:
             print(f"{key} LF: {self.get_load_factor()}")
-            self.resize(int(self.capacity/2))
+            self.resize(int(self.capacity/1.5))
 
     def get(self, key):
         """
